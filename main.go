@@ -22,17 +22,19 @@ func randString(l int) string {
 
 func noisy200(w http.ResponseWriter, r *http.Request) {
 	lb := make(map[string]string)
-	for i := 0; i < 500; i++ {
+	for i := 0; i < 100; i++ {
 		lb[randString(5)] = randString(20)
 	}
 
-	message, err := json.Marshal(lb)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-	}
+	for i := 0; i < 3; i++ {
+		message, err := json.Marshal(lb)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+		}
 
-	log.Print(string(message))
+		log.Print(string(message))
+	}
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK"))
