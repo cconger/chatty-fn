@@ -26,15 +26,17 @@ func noisy200(w http.ResponseWriter, r *http.Request) {
 		lb[randString(5)] = randString(20)
 	}
 
-	for i := 0; i < 3; i++ {
-		message, err := json.Marshal(lb)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(err.Error()))
-		}
+	message, err := json.Marshal(lb)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+	}
 
+	for i := 0; i < 3; i++ {
 		log.Print(string(message))
 	}
+	fmt.Fprintf(os.Stdout, "This is me writing to stdout on request!\n")
+	fmt.Fprintf(os.Stdout, string(message))
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK"))
